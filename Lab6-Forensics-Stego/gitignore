@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Medii virtuale
+.venv/
+venv/
+env/
+
+# Cache de teste / unelte
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# VS Code (optional - setari locale)
+.vscode/
+
+# Artefacte de livrare / byproduse
+*.zip
+probe/gasit.zip
