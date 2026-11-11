@@ -1,0 +1,6 @@
+{
+  "sursa": "probe\\xor.bin",
+  "metoda": "xor1",
+  "cheie": 128,
+  "rezultat": "Un singur octet tine tot secretul... gaseste-l! FLAG{xor_un_octet}"
+}
