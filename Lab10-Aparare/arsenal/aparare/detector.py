@@ -81,7 +81,10 @@ def main():
     else:
         esecuri = citeste_esecuri(a.log)
     counts = Counter(e["ip"] for e in esecuri)
-    sus = suspecti(counts, a.prag)
+    try:
+        sus = suspecti(counts, a.prag)
+    except ValueError as e:
+        p.error(str(e))                # mesaj clar, fara traceback
 
     afisate = counts.most_common(a.top) if a.top else counts.most_common()
 

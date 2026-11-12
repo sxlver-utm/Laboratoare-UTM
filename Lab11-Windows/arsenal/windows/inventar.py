@@ -13,7 +13,7 @@ from dataclasses import dataclass, asdict
 import json
 import argparse
 
-CAI_SUSPECTE = ("\\Temp\\", "\\Roaming\\")
+CAI_SUSPECTE = ("\\temp\\", "\\roaming\\")   # comparate cu litere mici
 SUSPECTE_ID = {4625, 1102, 7045}
 
 # optional 2: explicatia scurta a ID-urilor cunoscute
@@ -32,8 +32,9 @@ class Proces:
     cale: str
 
     def e_suspect(self):
-        """Un proces care ruleaza din Temp sau Roaming e un semn clasic."""
-        return any(s in self.cale for s in CAI_SUSPECTE)
+        """Un proces care ruleaza din Temp sau Roaming e un semn clasic.
+        Caile Windows nu tin cont de majuscule, deci comparam cu .lower()."""
+        return any(s in self.cale.lower() for s in CAI_SUSPECTE)
 
 
 @dataclass

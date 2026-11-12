@@ -60,3 +60,23 @@ def test_hash_dictionar(tmp_path):
     algo, parola = sparge_hash(tinta, str(wl))
     assert algo == "md5"
     assert parola == "password"
+
+
+def test_text_clar_nu_e_decodat():
+    # "parola12" arata a base64, dar decodat da octeti fara sens
+    straturi, b = desfa_straturi("parola12")
+    assert straturi == []
+    assert b == b"parola12"
+
+
+def test_xor_nu_intoarce_cheia_zero():
+    cheie, clar = sparge_xor1(b"deja citibil")
+    assert cheie != 0
+
+
+def test_lant_base64_peste_xor():
+    import base64
+    cifrat = bytes(c ^ 0x80 for c in b"FLAG{lant}")
+    straturi, b = desfa_straturi(base64.b64encode(cifrat).decode())
+    assert straturi == ["base64", "xor1(cheie=128)"]
+    assert b == b"FLAG{lant}"
