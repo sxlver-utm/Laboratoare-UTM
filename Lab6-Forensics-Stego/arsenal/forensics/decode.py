@@ -49,8 +49,8 @@ def desfa(s):
 
 # ---------------------------------------------------------------- A4
 def citibil(b):
-    """True daca toti octetii sunt imprimabili ASCII (32..126)."""
-    return len(b) > 0 and all(32 <= c < 127 for c in b)
+    """True daca toti octetii sunt imprimabili ASCII (32..126) sau tab/newline."""
+    return len(b) > 0 and all(32 <= c < 127 or c in (9, 10, 13) for c in b)
 
 
 def desfa_straturi(val, maxim=8):
@@ -58,6 +58,9 @@ def desfa_straturi(val, maxim=8):
 
     Se opreste cand textul decodat nu mai e o codare recunoscuta (de ex.
     un FLAG{...}, care contine { } _ si iese din alfabetul base64/hex/url).
+    Daca un strat da octeti necitibili, incearca un XOR cu cheie de un octet;
+    daca nici asa nu iese text, stratul e respins (textul era deja clar,
+    ex. "parola12" arata a base64, dar nu este).
     Intoarce (lista_straturi, rezultat_bytes).
     """
     straturi = []
@@ -65,20 +68,25 @@ def desfa_straturi(val, maxim=8):
     for _ in range(maxim):
         if ghici_strat(val) == "necunoscut":
             break
-        strat, b = desfa(val)
-        straturi.append(strat)
-        try:
-            val = b.decode()
-        except UnicodeDecodeError:
+        strat, nou = desfa(val)
+        if not citibil(nou):
+            cheie, clar = sparge_xor1(nou)
+            if cheie is None:
+                break                      # stratul nu duce nicaieri: ne oprim
+            straturi += [strat, f"xor1(cheie={cheie})"]
+            b = clar
             break
+        straturi.append(strat)
+        b = nou
+        val = b.decode()
     return straturi, b
 
 
 # ---------------------------------------------------------------- A5
 def sparge_xor1(date):
-    """Incearca toate cele 256 de chei de un octet; intoarce (cheie, clar)
+    """Incearca cheile 1..255 (cheia 0 nu schimba nimic); intoarce (cheie, clar)
     pentru prima cheie care da text citibil, altfel (None, None)."""
-    for k in range(256):
+    for k in range(1, 256):
         clar = bytes(b ^ k for b in date)
         if citibil(clar):
             return k, clar

@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Medii virtuale
+.venv/
+venv/
+
+# Fisiere temporare Word / LibreOffice
+~$*
+.~lock.*#
