@@ -42,7 +42,7 @@ comparat (nu se „decriptează" hash-ul).
 ### A7. Unealtă + fișă + test
 - CLI cu `argparse`: `python arsenal/forensics/decode.py "<sir>"` sau `... <cale> --fisier`.
 - Rezultatul se salvează în `arsenal/forensics/fisa.json`.
-- `teste/test_decode.py`: **8 teste, toate trec** (`pytest -q` → `8 passed`).
+- `teste/test_decode.py`: **11 teste, toate trec** (`pytest -q` → `11 passed`).
 
 ---
 
